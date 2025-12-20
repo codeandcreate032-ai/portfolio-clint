@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAYYETI LAKSHMI DURGA - Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="responsiveness.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        /* Mobile View Popup Styles */
+        .mobile-view-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .mobile-view-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #555;
+            transition: color 0.3s;
+        }
+        
+        .popup-close:hover {
+            color: #000;
+        }
+        
+        .popup-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .popup-message {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .steps-container {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .step-icon {
+            background-color: #f0f0f0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-icon i {
+            font-size: 18px;
+            color: #555;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .step-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .popup-button {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .popup-button:hover {
+            background-color: #3a5ce5;
+        }
+        
+        @media (min-width: 1024px) {
+            .mobile-view-popup {
+                display: none !important;
+            }
+        }
+        
+        /* Project Demo Popup Styles */
+        .demo-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .demo-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .demo-popup-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .demo-popup-icon {
+            font-size: 48px;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        
+        .demo-popup-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .demo-popup-message {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .demo-popup-button {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .demo-popup-button:hover {
+            background-color: #3a5ce5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile View Popup -->
+    <div class="mobile-view-popup" id="mobileViewPopup">
+        <div class="popup-content">
+            <div class="popup-close" id="popupClose">
+                <i class="fas fa-times"></i>
+            </div>
+            <h2 class="popup-title">For a Better Experience</h2>
+            <p class="popup-message">Please switch to desktop view for the best experience on this portfolio website.</p>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Step 1</div>
+                        <div class="step-description">Tap on the menu icon (three dots) in your browser</div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Step 2</div>
+                        <div class="step-description">Select "Desktop site" or "Request desktop site" option</div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-title">Step 3</div>
+                        <div class="step-description">The page will reload in desktop view</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="popup-button" id="popupButton">I Understand</button>
+        </div>
+    </div>
+
+    <!-- Project Demo Popup -->
+    <div class="demo-popup" id="demoPopup">
+        <div class="demo-popup-content">
+            <div class="popup-close" id="demoPopupClose">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="demo-popup-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2 class="demo-popup-title">Demo Not Available</h2>
+            <p class="demo-popup-message">Currently, this project is not live. Stay tuned for updates!</p>
+            <button class="demo-popup-button" id="demoPopupButton">Got It</button>
+        </div>
+    </div>
+
+    <!-- Preloader Section -->
+    <div class="preloader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <img src="images/logo.png" alt="VAYYETI LAKSHMI DURGA Logo" class="loader-logo-img">
+            </div>
+            <div class="loader-text">VAYYETI LAKSHMI DURGA</div>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <!-- Header/Navigation -->
+    <header id="header">
+        <nav class="navbar container">
+            <div class="logo">
+                <img src="images/logo.png" alt="VAYYETI LAKSHMI DURGA Logo" class="logo-img">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about" class="nav-link"><i class="fas fa-user"></i> About</a></li>
+                <li><a href="#education" class="nav-link"><i class="fas fa-graduation-cap"></i> Education</a></li>
+                <li><a href="#skills" class="nav-link"><i class="fas fa-code"></i> Skills</a></li>
+                <li><a href="#certificates" class="nav-link"><i class="fas fa-certificate"></i> Certificates</a></li>
+                <li><a href="#projects" class="nav-link"><i class="fas fa-project-diagram"></i> Projects</a></li>
+                <li><a href="#activities" class="nav-link"><i class="fas fa-hands-helping"></i> Activities</a></li>
+                <li><a href="#contact" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            <div class="search-container">
+                <div class="search-box" id="searchBox">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search portfolio..." autocomplete="off">
+                    <button class="search-clear" id="searchClear" title="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <button class="search-toggle" id="searchToggle" title="Search (Ctrl+K)">
+                    <i class="fas fa-search"></i>
+                </button>
+                <div class="search-results" id="searchResults">
+                    <div class="search-results-header">
+                        <div class="search-results-title">Search Results</div>
+                        <button class="search-results-close" id="searchResultsClose" title="Close (Esc)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="search-results-content" id="searchResultsContent">
+                        <div class="no-results" id="noResults">Enter a keyword to search</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title animate-fade-in">VAYYETI LAKSHMI DURGA</h1>
+            <h2 class="hero-subtitle animate-fade-in">React Native Junior Developer | Web & Android Developer | ML Enthusiast</h2>
+            <p class="hero-description animate-fade-in">Motivated, detail-oriented developer with a passion for creating innovative mobile and web applications.</p>
+            <div class="hero-buttons animate-fade-in">
+                <a href="#contact" class="btn btn-primary">Contact Me</a>
+                <a href="#projects" class="btn btn-secondary">View Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-photo">
+                    <img src="images/Dec 19, 2025, 03_43_37 PM.png" alt="VAYYETI LAKSHMI DURGA" class="profile-img">
+                </div>
+                <div class="about-text">
+                    <p>I'm a passionate developer currently pursuing B.Tech with a strong foundation in web and mobile development. My journey in technology began with my diploma studies, and I've since expanded my expertise to include React Native, Machine Learning, and Android Development.</p>
+                    <p>I thrive on challenges and am constantly seeking opportunities to learn and grow. My approach combines technical skills with strong soft skills like communication, adaptability, and leadership to deliver effective solutions.</p>
+                </div>
+            </div>
+            <div class="soft-skills">
+                <h3>Soft Skills</h3>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <i class="fas fa-comments"></i>
+                        <span>Communication</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Adaptability</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-random"></i>
+                        <span>Flexibility</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-users"></i>
+                        <span>Leadership</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Time Management</span>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Patience</span>
+                    </div>
+                </div>
+            </div>
+            <div class="resume-download">
+                <a href="resume.pdf" class="btn btn-primary" download="VAYYETI_LAKSHMI_DURGA_Resume.pdf">
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section">
+        <div class="container">
+            <h2 class="section-title">Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>B.Tech</h3>
+                        <h4>Raghu Engineering College (REC)</h4>
+                        <p>2022–2025</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Diploma</h3>
+                        <h4>Government Polytechnic College</h4>
+                        <p>2019–2022</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Schooling</h3>
+                        <h4>Gloria English Medium School</h4>
+                        <p>2012–2019</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-container">
+                <div class="skills-category">
+                    <h3>Web Development</h3>
+                    <div class="skills-icons-grid">
+                        <div class="skill-icon-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fab fa-react"></i>
+                            <span>React</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Mobile & ML</h3>
+                    <div class="skills-icons-grid">
+                        <div class="skill-icon-item">
+                            <i class="fab fa-react"></i>
+                            <span>React Native</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fab fa-android"></i>
+                            <span>Android</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Machine Learning</span>
+                        </div>
+                        <div class="skill-icon-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Other Skills</h3>
+                    <div class="skills-icons-grid">
+                        <div class="skill-icon-item">
+                            <i class="fas fa-network-wired"></i>
+                            <span>Cisco Networking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates & Internships Section -->
+    <section id="certificates" class="section">
+        <div class="container">
+            <h2 class="section-title">Certificates & Internships</h2>
+            <div class="certificates-grid">
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Web Developer</h3>
+                    <p>HTML, CSS, JavaScript</p>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Machine Learning Internship</h3>
+                    <p>Skill Dzire</p>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Python Certification</h3>
+                    <p>HackerRank</p>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Android Developer Internship</h3>
+                    <p>Edu Skills</p>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Cisco CCNAv7</h3>
+                    <p>Switching/Routing/Wireless</p>
+                </div>
+                <div class="certificate-card">
+                    <div class="certificate-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Web Blaze Workshop</h3>
+                    <p>Attendee</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Ticket Management</h3>
+                        <p>A website to book and cancel tickets with a user-friendly interface.</p>
+                        <div class="project-tech">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                        </div>
+                        <div class="project-buttons">
+                            <a href="#" class="btn-demo demo-link"><i class="fas fa-external-link-alt"></i> View Demo</a>
+                            <a href="https://github.com/Lakshmi322-6/ticket-management" class="btn-code"><i class="fab fa-github"></i> Get Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Stress Detection</h3>
+                        <p>ML and image processing project to detect stress levels accurately.</p>
+                        <div class="project-tech">
+                            <span>Machine Learning</span>
+                            <span>Image Processing</span>
+                        </div>
+                        <div class="project-buttons">
+                            <a href="#" class="btn-demo demo-link"><i class="fas fa-external-link-alt"></i> View Demo</a>
+                            <a href="https://github.com/Lakshmi322-6/stress-detection" class="btn-code"><i class="fab fa-github"></i> Get Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="section">
+        <div class="container">
+            <h2 class="section-title">Extra Activities</h2>
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>NSS Volunteer</h3>
+                    <p>Active participation in National Service Scheme activities</p>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Web Blaze Workshop</h3>
+                    <p>Attendee at web development workshop</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>vayyetilakshmi.durga@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>8367748967</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>Visakhapatnam City in Andhra Pradesh</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/lakshmi-durga" target="_blank" class="social-link">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://github.com/Lakshmi322-6" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p>&copy; 2025 Designed & developed by kodingwala.All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+    
+    <!-- WhatsApp Integration Script -->
+    <script>
+        // Wait for the DOM to be fully loaded before attaching event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the contact form
+            const contactForm = document.getElementById('contactForm');
+            
+            // Check if the form exists
+            if (contactForm) {
+                // Add submit event listener to the form
+                contactForm.addEventListener('submit', function(e) {
+                    // Prevent default form submission
+                    e.preventDefault();
+                    
+                    // Get form values using FormData API
+                    const formData = new FormData(contactForm);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const message = formData.get('message');
+                    
+                    // Format the WhatsApp message with user details
+                    const whatsappMessage = `Hi, my name is ${name}. My email is ${email}. ${message}`;
+                    
+                    // Your WhatsApp number in international format (without + or spaces)
+                    const phoneNumber = "918367748967"; // Replace with your actual number
+                    
+                    // Create WhatsApp URL with pre-filled message
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                    
+                    // Open WhatsApp in a new tab
+                    window.open(whatsappURL, '_blank');
+                    
+                    // Reset form after submission
+                    contactForm.reset();
+                });
+            } else {
+                console.error('Contact form not found');
+            }
+        });
+    </script>
+    
+    <!-- Mobile View Detection Script -->
+    <script>
+        // Function to check if the device is mobile or tablet
+        function isMobileOrTablet() {
+            // Check screen width
+            if (window.innerWidth < 1024) {
+                return true;
+            }
+            
+            // Check user agent
+            const userAgent = navigator.userAgent.toLowerCase();
+            const mobileKeywords = ['mobile', 'android', 'iphone', 'ipad', 'tablet'];
+            
+            for (let i = 0; i < mobileKeywords.length; i++) {
+                if (userAgent.indexOf(mobileKeywords[i]) !== -1) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        // Show popup if device is mobile or tablet
+        window.addEventListener('load', function() {
+            if (isMobileOrTablet()) {
+                // Show popup after a short delay
+                setTimeout(function() {
+                    document.getElementById('mobileViewPopup').classList.add('active');
+                }, 1000);
+            }
+        });
+        
+        // Close popup when close button is clicked
+        document.getElementById('popupClose').addEventListener('click', function() {
+            document.getElementById('mobileViewPopup').classList.remove('active');
+        });
+        
+        // Close popup when "I Understand" button is clicked
+        document.getElementById('popupButton').addEventListener('click', function() {
+            document.getElementById('mobileViewPopup').classList.remove('active');
+        });
+        
+        // Close popup when clicking outside the popup content
+        document.getElementById('mobileViewPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    </script>
+    
+    <!-- Project Demo Popup Script -->
+    <script>
+        // Get all demo links
+        const demoLinks = document.querySelectorAll('.demo-link');
+        
+        // Add click event to each demo link
+        demoLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Show demo popup
+                document.getElementById('demoPopup').classList.add('active');
+            });
+        });
+        
+        // Close popup when close button is clicked
+        document.getElementById('demoPopupClose').addEventListener('click', function() {
+            document.getElementById('demoPopup').classList.remove('active');
+        });
+        
+        // Close popup when "Got It" button is clicked
+        document.getElementById('demoPopupButton').addEventListener('click', function() {
+            document.getElementById('demoPopup').classList.remove('active');
+        });
+        
+        // Close popup when clicking outside the popup content
+        document.getElementById('demoPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
