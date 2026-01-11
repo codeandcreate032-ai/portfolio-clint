@@ -209,6 +209,37 @@
         .demo-popup-button:hover {
             background-color: #3a5ce5;
         }
+        
+        /* WhatsApp Form Notification */
+        .whatsapp-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #25D366;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-notification.show {
+            transform: translateX(0);
+        }
+        
+        .whatsapp-notification i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .whatsapp-notification .close-btn {
+            margin-left: 15px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -270,6 +301,13 @@
             <p class="demo-popup-message">Currently, this project is not live. Stay tuned for updates!</p>
             <button class="demo-popup-button" id="demoPopupButton">Got It</button>
         </div>
+    </div>
+
+    <!-- WhatsApp Notification -->
+    <div class="whatsapp-notification" id="whatsappNotification">
+        <i class="fab fa-whatsapp"></i>
+        <span>Opening WhatsApp to send your message...</span>
+        <i class="fas fa-times close-btn" id="notificationClose"></i>
     </div>
 
     <!-- Preloader Section -->
@@ -679,42 +717,127 @@
     
     <!-- WhatsApp Integration Script -->
     <script>
-        // Wait for the DOM to be fully loaded before attaching event listeners
-        document.addEventListener('DOMContentLoaded', function() {
+        // WhatsApp integration - completely rewritten for reliability
+        function initWhatsAppIntegration() {
+            console.log("Initializing WhatsApp integration...");
+            
             // Get the contact form
             const contactForm = document.getElementById('contactForm');
             
-            // Check if the form exists
             if (contactForm) {
-                // Add submit event listener to the form
-                contactForm.addEventListener('submit', function(e) {
+                console.log("Contact form found, attaching event listener");
+                
+                // Remove any existing listeners to prevent duplicates
+                const newForm = contactForm.cloneNode(true);
+                contactForm.parentNode.replaceChild(newForm, contactForm);
+                
+                // Add submit event listener to the new form
+                newForm.addEventListener('submit', function(e) {
+                    console.log("Form submit event triggered");
+                    
                     // Prevent default form submission
                     e.preventDefault();
                     
-                    // Get form values using FormData API
-                    const formData = new FormData(contactForm);
-                    const name = formData.get('name');
-                    const email = formData.get('email');
-                    const message = formData.get('message');
+                    // Get form values
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const message = document.getElementById('message').value.trim();
                     
-                    // Format the WhatsApp message with user details
-                    const whatsappMessage = `Hi, my name is ${name}. My email is ${email}. ${message}`;
+                    console.log("Form values:", { name, email, message });
                     
-                    // Your WhatsApp number in international format (without + or spaces)
-                    const phoneNumber = "918367748967"; // Replace with your actual number
+                    // Validate form fields
+                    if (!name || !email || !message) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
                     
-                    // Create WhatsApp URL with pre-filled message
-                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                    // Create WhatsApp message with exact format
+                    const whatsappMessage = `*New Message from Portfolio Website*\n\n*Name:* ${name}\n*Email:* ${email}\n\n*Message:*\n${message}\n\n_Sent on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}_`;
                     
-                    // Open WhatsApp in a new tab
-                    window.open(whatsappURL, '_blank');
+                    console.log("WhatsApp message created:", whatsappMessage);
                     
-                    // Reset form after submission
-                    contactForm.reset();
+                    // Your WhatsApp number (change this to your actual number)
+                    const phoneNumber = "918367748967";
+                    
+                    // Create WhatsApp URL with proper encoding
+                    const encodedMessage = encodeURIComponent(whatsappMessage);
+                    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                    
+                    console.log("WhatsApp URL:", whatsappURL);
+                    
+                    // Show notification
+                    showNotification();
+                    
+                    // Try multiple methods to open WhatsApp
+                    try {
+                        // Method 1: Direct window.open
+                        const newWindow = window.open(whatsappURL, '_blank');
+                        
+                        // Method 2: If popup is blocked, try location.href
+                        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+                            console.log("Popup blocked, trying location.href");
+                            window.location.href = whatsappURL;
+                        }
+                    } catch (error) {
+                        console.error("Error opening WhatsApp:", error);
+                        // Fallback: Create a temporary link and click it
+                        const link = document.createElement('a');
+                        link.href = whatsappURL;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+                    
+                    // Reset form after a short delay
+                    setTimeout(() => {
+                        newForm.reset();
+                    }, 1000);
                 });
             } else {
-                console.error('Contact form not found');
+                console.error("Contact form not found");
             }
+        }
+        
+        // Show notification function
+        function showNotification() {
+            console.log("Showing notification");
+            const notification = document.getElementById('whatsappNotification');
+            if (notification) {
+                notification.classList.add('show');
+                
+                // Hide after 4 seconds
+                setTimeout(function() {
+                    notification.classList.remove('show');
+                }, 4000);
+            } else {
+                console.error("Notification element not found");
+            }
+        }
+        
+        // Close notification when clicking the X button
+        function initNotificationClose() {
+            const closeBtn = document.getElementById('notificationClose');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    console.log("Closing notification");
+                    document.getElementById('whatsappNotification').classList.remove('show');
+                });
+            }
+        }
+        
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded, initializing WhatsApp integration");
+            initWhatsAppIntegration();
+            initNotificationClose();
+        });
+        
+        // Also initialize after window load to ensure everything is ready
+        window.addEventListener('load', function() {
+            console.log("Window loaded, checking WhatsApp integration");
+            initWhatsAppIntegration();
         });
     </script>
     
